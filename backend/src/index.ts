@@ -1,5 +1,9 @@
 import "dotenv/config";
-import express, { type NextFunction, type Request, type Response } from "express";
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+} from "express";
 import cors from "cors";
 import { authRouter } from "./routes/auth.js";
 import { projectRouter } from "./routes/projects.js";
@@ -10,13 +14,13 @@ if (!process.env.JWT_SECRET || !process.env.DATABASE_URL) {
 }
 
 const app = express();
+app.set("trust proxy", 1);
 app.use(cors({ origin: process.env.CLIENT_ORIGIN ?? "http://localhost:3000" }));
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
 app.use("/api/projects", projectRouter);
 
-// Catches errors thrown in async routes (Express 5 forwards them automatically)
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error(err);
   res.status(500).json({ message: "Something went wrong" });
