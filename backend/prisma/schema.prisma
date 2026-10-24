@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
+  RECHECK
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         Role      @default(STUDENT)
+  createdAt    DateTime  @default(now())
+  projects     Project[]
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  // stored in a cleaned-up form (lowercase, no trailing slash or .git) so duplicates are caught
+  repoUrl     String   @unique
+  liveUrl     String
+  description String
+  status      Status   @default(PENDING)
+  feedback    String?
+  // mentor's mark, 0 to 60
+  mark        Int?
+  createdAt   DateTime @default(now())
+  student     User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId   String
+}

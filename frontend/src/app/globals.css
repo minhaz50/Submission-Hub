@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #f6f7fb;
+  --color-foreground: #14192b;
+  --color-card: #ffffff;
+  --color-primary: #4338ca;
+  --color-primary-foreground: #ffffff;
+  --color-muted: #eceef6;
+  --color-muted-foreground: #5b627a;
+  --color-border: #dcdfeb;
+  --color-ring: #4338ca;
+  --color-destructive: #dc2626;
+  --color-success: #15803d;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  @apply bg-background text-foreground antialiased;
+}
+
+/* Scroll animation: elements start hidden and slide up when they enter the screen */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+/* Grid paper background */
+.grid-paper {
+  background-image:
+    linear-gradient(to right, rgb(20 25 43 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(20 25 43 / 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
